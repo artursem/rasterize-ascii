@@ -1,5 +1,6 @@
 const density = 'Ñ@#W$9876543210?!abc;:+=-,._ '
-
+let tileSize;
+let tileCount;
 let img;
 function preload() {
 img = loadImage('assets/venus-milo.jpg');
@@ -7,7 +8,11 @@ img = loadImage('assets/venus-milo.jpg');
 
 function setup() {
   createCanvas(400, 400);
-  img.resize(50, 50)
+  tileSize = 1;
+  tileCount = width / tileSize;
+  // img.resize(tileCount, tileCount)
+  img.resize(400, 400)
+  
   // createLoop({
     //   duration: 8, 
     //   framesPerSecond: 60, 
@@ -18,17 +23,18 @@ function setup() {
     // });
   }
   
+  
   function draw() {
-    background(0);
+    background(220);
     // image(im g, 0, 0, width, height);
     
-    let w = width / img.width;
-    let h = height / img.height;
+    let w = width / tileCount;
+    let h = height / tileCount;
 
     img.loadPixels();
     
-    for (let i=0; i<img.width; i++) {
-      for (let j=0; j<img.height; j++) {
+    for (let i=0; i<tileCount; i++) {
+      for (let j=0; j<tileCount; j++) {
         const pixelIndex = (i + j * img.width) * 4;
         const r = img.pixels[pixelIndex + 0];
         const g = img.pixels[pixelIndex + 1];
@@ -36,10 +42,17 @@ function setup() {
         const avg = (r+g+b)/3;
         
         noStroke();
-        fill(avg);
-        // square(i * w,  j * h, w);
+        fill(0); 
+        // squares
+        // square(i * w,  j * h, 0.3 * w * avg / 255);
+
+        // chars
         textSize(w)
-        text('V', i * w, j * h);
+        textAlign(CENTER, CENTER);
+        let length = density.length;
+        const charIndex = Math.floor( map(avg, 0, 255, 0, length));
+        text(density.charAt(charIndex), i * w + w * 0.5, j * h + h * 0.5); 
+
       }
     } 
 
