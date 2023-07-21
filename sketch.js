@@ -1,45 +1,38 @@
-const density = 'Ñ@#W$9876543210?!abc;:+=-,._ '
-let tileSize;
-let tileCount;
-let img;
-function preload() {
-img = loadImage('assets/venus-milo.jpg');
-}
+const density = 'Ñ@#W$9876543210?!abc;:+=-,._ ';
+  
+let video; 
+let asciiDiv;
 
 function setup() {
   noCanvas();
-  tileSize = 1;
-  tileCount = width / tileSize
-  img.resize(tileCount, tileCount);
-  
-  background(0);
+  video = createCapture(VIDEO);
+  video.size(100, 100)
+  asciiDiv = createDiv()
+}
 
-  let w = width / tileCount;
-  let h = height / tileCount;
-
-  img.loadPixels();
-  
-  for (let j=0; j<tileCount; j++) {
-    let row = "";
-
-    for  (let i=0; i<tileCount; i++) {
-      const pixelIndex = (i + j * img.width) * 4;
-      const r = img.pixels[pixelIndex + 0];
-      const g = img.pixels[pixelIndex + 1];
-      const b = img.pixels[pixelIndex + 2];
+function draw() {
+  video.loadPixels();
+   
+  let asciiImage = "";
+  for (let j=0; j<video.height; j++) {
+    for (let i=0; i<video.width; i++) {
+      const pixelIndex = (i + j * video.width) * 4;
+      const r = video.pixels[pixelIndex + 0];
+      const g = video.pixels[pixelIndex + 1];
+      const b = video.pixels[pixelIndex + 2];
       const avg = (r+g+b)/3;
-
-      textSize(w)
-      textAlign(CENTER, CENTER);
       const length = density.length;
-      const charIndex = Math.floor( map(avg, 0, 255, length, 0));
+      const charIndex = Math.floor(map(avg, 0, 255, length, 0));
       const c = density.charAt(charIndex);
-      if (c === ' ') {
-        row += '&nbsp;';
+
+      if (c == ' ') {
+        asciiImage += '&nbsp;';
       } else {
-        row += c;
+        asciiImage += c;
       }
     }
-    createDiv(row)
-   } 
+    asciiImage += '<br>'; 
+    // createDiv(row)
+  }
+  asciiDiv.html(asciiImage);
 }
