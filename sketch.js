@@ -8,10 +8,9 @@ img = loadImage('assets/venus-milo.jpg');
 
 function setup() {
   createCanvas(400, 400);
-  tileSize = 1;
-  tileCount = width / tileSize;
-  // img.resize(tileCount, tileCount)
-  img.resize(400, 400)
+  tileSize = 30;
+  tileCount = width / tileSize
+  img.resize(tileCount, tileCount);
   
   // createLoop({
     //   duration: 8, 
@@ -26,8 +25,7 @@ function setup() {
   
   function draw() {
     background(220);
-    // image(im g, 0, 0, width, height);
-    
+
     let w = width / tileCount;
     let h = height / tileCount;
 
